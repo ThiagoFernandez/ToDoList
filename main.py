@@ -17,7 +17,9 @@ except FileNotFoundError:
     }
 except json.JSONDecodeError:
     print("The task list was found empty. Starting a new one...")
-    taskList = {}
+    taskList = {
+        "users": {}
+    }
 try:
     with open("./notificationSettings.json", "r") as f:
         notificationList = json.load(f)
@@ -29,7 +31,9 @@ except FileNotFoundError:
     }
 except json.JSONDecodeError:
     print("The notification list was found empty. Starting a new one...")
-    notificationList = {}
+    notificationList = {
+        "users": {}
+    }
 # fix for a new file
 def saveFile(fileObject):
     with open("./task_list.json", "w") as f:
@@ -752,6 +756,7 @@ def changeWhatSetting(user, what):
                     print("Invalid email:", str(e))
         
         notificationList["users"][user][what] = newWhat
+        saveNotificationFile(notificationList)
         print(f"Your {what} has been changed")
     
     return None
@@ -773,6 +778,7 @@ def deleteUser(user):
                 newActiveUser = userSelectorMenu()
                 if newActiveUser == None:
                     return -1
+                break
     return None
 
 def userSettingsMenu(user):
@@ -799,6 +805,7 @@ def userSettingsMenu(user):
                         result = deleteUser(user)
                         if result == -1:
                             return -1
+                        
         except ValueError:
             print("The option must be a number | Try again")
     return None
